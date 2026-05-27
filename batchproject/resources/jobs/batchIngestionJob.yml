@@ -1,0 +1,18 @@
+resources:
+  jobs:
+    batchIngestionJob:
+      name: batchIngestionJob
+      tasks:
+        - task_key: Bronze
+          notebook_task:
+            notebook_path: ../../src/01_bronze_ingestion.ipynb
+            source: WORKSPACE
+        - task_key: Silver
+          depends_on:
+            - task_key: Bronze
+          notebook_task:
+            notebook_path: ../../src/02_silver_ingestion.ipynb
+            source: WORKSPACE
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED
