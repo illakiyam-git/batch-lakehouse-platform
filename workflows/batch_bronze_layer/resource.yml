@@ -1,0 +1,12 @@
+resources:
+  jobs:
+    Batch_Lakehouse_sam:
+      name: Batch_Lakehouse_sam
+      tasks:
+        - task_key: Bronze
+          notebook_task:
+            notebook_path: /Workspace/Users/illakiyajothi@gmail.com/01_bronze_ingestion
+            source: WORKSPACE
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED
