@@ -2,6 +2,7 @@
 
 import os, sys, pathlib
 from contextlib import contextmanager
+import pandas as pd
 
 
 try:
@@ -20,26 +21,18 @@ except ImportError:
 
 @pytest.fixture()
 def spark() -> SparkSession:
-    """Provide a SparkSession fixture for tests.
 
-    Minimal example:
-        def test_uses_spark(spark):
+    def test_uses_spark(spark):
             df = spark.createDataFrame([(1,)], ["x"])
             assert df.count() == 1
-    """
     return DatabricksSession.builder.getOrCreate()
 
 
 @pytest.fixture()
 def load_fixture(spark: SparkSession):
-    """Provide a callable to load JSON or CSV from fixtures/ directory.
-
-    Example usage:
-
-        def test_using_fixture(load_fixture):
-            data = load_fixture("my_data.json")
+    def test_using_fixture(load_fixture):
+            data = load_fixture("/Volumes/workspace/source/product/")
             assert data.count() >= 1
-    """
 
     def _loader(filename: str):
         path = pathlib.Path(__file__).parent.parent / "fixtures" / filename
@@ -47,6 +40,9 @@ def load_fixture(spark: SparkSession):
         if suffix == ".json":
             rows = json.loads(path.read_text())
             return spark.createDataFrame(rows)
+        if suffix == ".parquet":
+            df = pd.read_parquet(path)
+            return df
         if suffix == ".csv":
             with path.open(newline="") as f:
                 rows = list(csv.DictReader(f))
