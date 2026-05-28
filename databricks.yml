@@ -1,7 +1,7 @@
 # This is a Databricks asset bundle definition for batchproject.
 # See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
 bundle:
-  name: batchproject
+  name: batch-lakehouse-platform
   uuid: a0ae17ef-3867-4e38-9f99-108c6aa6966e
 
 include:
